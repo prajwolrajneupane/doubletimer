@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clap from "./assets/sound.mp3"
 
 function App() {
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(30);
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState(1); // 1 = 30 min, 2 = 10 min
