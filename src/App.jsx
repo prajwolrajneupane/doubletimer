@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import clap from "./assets/sound.mp3"
+import clap from "./assets/sound.mp3";
 
 function App() {
   const [minutes, setMinutes] = useState(30);
@@ -21,11 +21,9 @@ function App() {
             clearInterval(timer);
 
             if (phase === 1) {
-              // 🔊 Play sound for 5 seconds
               setIsPlayingSound(true);
               sound.play();
 
-              // Wait 5 seconds before starting 10-minute phase
               setTimeout(() => {
                 setMinutes(10);
                 setSeconds(0);
@@ -67,27 +65,112 @@ function App() {
   const formatTime = (min, sec) =>
     `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 
-  const formatHours = (totalSec) => (totalSec / 3600).toFixed(2); // up to 2 decimal places
+  const formatHours = (totalSec) => (totalSec / 3600).toFixed(2);
+
+  // Styles
+  const containerStyle = {
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    background: "#f0f4f8",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+  };
+
+  const cardStyle = {
+    background: "white",
+    borderRadius: "15px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+    padding: "40px 60px",
+    maxWidth: "350px",
+    width: "100%",
+    textAlign: "center",
+  };
+
+  const timeStyle = {
+    fontSize: "4rem",
+    fontWeight: "700",
+    color: phase === 1 ? "#4a90e2" : "#e94e77",
+    margin: "20px 0 30px",
+    letterSpacing: "3px",
+    fontFamily: "'Courier New', Courier, monospace",
+  };
+
+  const phaseTextStyle = {
+    fontSize: "1.2rem",
+    color: "#333",
+    marginBottom: "10px",
+    fontWeight: "600",
+  };
+
+  const messageStyle = {
+    fontSize: "1.1rem",
+    color: "#666",
+    marginBottom: "30px",
+  };
+
+  const buttonStyle = {
+    background: "#4a90e2",
+    border: "none",
+    color: "white",
+    padding: "12px 30px",
+    borderRadius: "30px",
+    fontSize: "1.2rem",
+    fontWeight: "600",
+    cursor: "pointer",
+    boxShadow: "0 5px 15px rgba(74, 144, 226, 0.4)",
+    transition: "background 0.3s ease",
+  };
+
+  const buttonHoverStyle = {
+    background: "#357ABD",
+  };
+
+  const [btnHover, setBtnHover] = useState(false);
 
   return (
-    <div style={{ fontSize: '2rem', textAlign: 'center', paddingTop: '30px' }}>
-      {!running && !finished && (
-        <button onClick={() => setRunning(true)}>▶️ Start</button>
-      )}
+    <div style={containerStyle}>
+      <div style={cardStyle}>
+        {!running && !finished && (
+          <button
+            style={{ ...buttonStyle, ...(btnHover ? buttonHoverStyle : {}) }}
+            onClick={() => setRunning(true)}
+            onMouseEnter={() => setBtnHover(true)}
+            onMouseLeave={() => setBtnHover(false)}
+          >
+            Start
+          </button>
+        )}
 
-      {running && !isPlayingSound && (
-        <p>⏱ Phase {phase}: {formatTime(minutes, seconds)}</p>
-      )}
+        {running && !isPlayingSound && (
+          <>
+            <div style={phaseTextStyle}>Phase {phase} Timer</div>
+            <div style={timeStyle}>{formatTime(minutes, seconds)}</div>
+          </>
+        )}
 
-      {isPlayingSound && <p>🔔 Ringing for 5 seconds...</p>}
+        {isPlayingSound && (
+          <p style={messageStyle}>Ringing for 5 seconds...</p>
+        )}
 
-      {finished && (
-        <>
-          <p>✅ All timers completed!</p>
-          <p>🕒 Total time elapsed: {formatHours(totalSecondsElapsed)} hours</p>
-          <button onClick={reset}>🔁 Start Again</button>
-        </>
-      )}
+        {finished && (
+          <>
+            <p style={{ ...phaseTextStyle, color: "#28a745" }}>All timers completed</p>
+            <p style={{ fontSize: "1.1rem", marginBottom: "30px" }}>
+              Total time elapsed: <strong>{formatHours(totalSecondsElapsed)} hours</strong>
+            </p>
+            <button
+              style={{ ...buttonStyle, background: "#28a745" }}
+              onClick={reset}
+              onMouseEnter={() => setBtnHover(true)}
+              onMouseLeave={() => setBtnHover(false)}
+            >
+              Start Again
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
