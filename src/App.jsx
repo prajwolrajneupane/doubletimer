@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import clap from "./assets/sound.mp3"
 
 function App() {
-  const [minutes, setMinutes] = useState(30);
+  const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(false);
   const [phase, setPhase] = useState(1); // 1 = 30 min, 2 = 10 min
   const [isPlayingSound, setIsPlayingSound] = useState(false);
   const [totalSecondsElapsed, setTotalSecondsElapsed] = useState(0);
   const [finished, setFinished] = useState(false);
-
-  const sound = new Audio("https://www.soundjay.com/buttons/sounds/beep-07.mp3");
+  const sound = new Audio(clap);
 
   useEffect(() => {
     if (!running || isPlayingSound) return;
